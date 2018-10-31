@@ -6,7 +6,7 @@ TODO: https
 
 ## Project
 
-Desing and implement Chatbot POC using Rasa stack and Zomato API
+Design and implement Chatbot POC using Rasa stack and Zomato API
 
 ## Installation Guide - Rasa
 
