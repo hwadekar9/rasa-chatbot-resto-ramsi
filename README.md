@@ -1,6 +1,8 @@
 # Ramsi Online
 
-https://ramsi.online
+http://ramsi.online
+
+TODO: https
 
 ## Project
 
