@@ -1,0 +1,142 @@
+slots:
+  location:
+    type: text
+    initial_value: "unknown"
+  location_type:
+    type: bool
+    initial_value: false
+  cuisine:
+    type: text
+    initial_value: "unknown"
+  price:
+    type: list
+    initial_value: [300,700]
+  email:
+    type: text
+    initial_value: "unknown"
+  noresults:
+    type: bool
+    initial_value: true
+  num:
+    type: float 
+    initial_value: 0
+    
+entities:
+- location
+- cuisine
+- num
+- email
+- person
+
+intents:
+ - greet
+ - affirm
+ - deny
+ - goodbye
+ - thankyou
+ - getnum
+ - restaurant_search
+ - send_mail
+ - ask_email
+ - user_ask
+ - about_yourself
+ 
+templates:
+  utter_userask:
+    - " My name is Ramsi. I can help you search for restaurants in tier 1 and 2 cities in India."
+    - " I am Ramsi. I am here to help you find out restaurants in tier 1 and 2 indian cities."
+  utter_aboutyourself:
+    - " My name is Ramsi. I was created by Sanyog and Santhosh on 18th August 2018."
+    - " I am Ramsi. But you can call me Rams. I love to search restaurants for my clients."
+    - " I am Ramsi. Being a bot can be lonely sometimes but I try to keep my spirits high and work to help the clients."
+  utter_greet:
+    - "Hi, How may i help you?"
+    - "Hello, how can I help you!"
+    - "Hey, how is it going? How may I help you today?"
+  utter_goodbye:
+    - "goodbye :("
+    - "Bye-bye"
+    - "Good bye. Have a nice day!"
+    - "It was great helping you out. Have a great day!"
+  utter_nontier:
+    - "Sorry, We do not operate in this area yet."
+    - "Unfortunately, we do not operate in this area yet."
+  utter_default:
+    - "I did not understand that. Could you please repeat again?"
+  utter_ask_cuisine: 
+    - text: "What kind of cuisine would you like?"
+      buttons:
+      - title: "Chinese"
+        payload: "chinese"
+      - title: "Mexican"
+        payload: "mexican"
+      - title: "Italian"
+        payload: "italian"
+      - title: "American"
+        payload: "american"
+      - title: "South Indian"
+        payload: "south indian"
+      - title: "North Indian"
+        payload: "north indian"
+  utter_ask_howcanhelp:
+    - "how can I help you?"
+  utter_ask_location:
+    - "In what location?"
+    - "Please provide the location"
+    - "where are you based out of?"
+  utter_thanks:
+    - "Mention not. Is there anything else I can help you with?"
+    - "My pleasure. What else can I do for you?"
+  utter_noresults:
+    - " That's unfortunate. May I help you with any other search?"
+    - " Sorry for that. Can I help you with something else?"
+  utter_ask_price:
+    - text: "What price range are you looking at?"
+      buttons:
+      - title: "Lesser than Rs. 300"
+        payload: "Lesser than Rs. 300"
+      - title: "Rs. 300 to 700"
+        payload: "Rs. 300 to 700"
+      - title: "More than Rs. 700"
+        payload: "More than Rs. 700" 
+  utter_ask_ifmail:
+    - "Shall I send you the top 10 results via email?"
+    - "Would you like me to send the top 10 results via email?"    
+    - "Would you like to have the top 10 results emailed to you?"
+    - "Would you be interested in having top 10 results emailed to you?"
+  utter_ask_mail:
+    - "Could you please share your email address then?"
+    - "What is your email address?"
+    - "Please provide your email address"
+    - "Provide your email address please"
+    - "Please enter your email address"
+  utter_email_Sent:
+    - "The details have been emailed to you"
+    - "Email has been sent to the address provided by you"
+  utter_email_error:
+    - "Sorry, something went wrong, could not send the email."
+    - "Email could not be sent, apologise for the inconvience."   
+actions:
+- utter_userask
+- utter_aboutyourself
+- utter_greet
+- utter_goodbye
+- utter_default
+- utter_ask_howcanhelp
+- utter_ask_location
+- utter_ask_cuisine
+- utter_nontier
+- utter_noresults
+- utter_ask_price
+- utter_thanks
+- utter_ask_ifmail
+- utter_ask_mail
+- utter_email_Sent
+- utter_email_error
+- actions.ActionSearchCity
+- actions.ActionSearchRestaurants
+- actions.ActionSendMail
+- actions.ActionGetCuisineSlection
+- actions.ActionGetPriceSelection
+- actions.ActionResetSlots
+- actions.ActionRestarted

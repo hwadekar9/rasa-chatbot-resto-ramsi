@@ -1,0 +1,188 @@
+%YAML 1.1
+---
+action_factory: null
+action_names:
+- utter_userask
+- utter_aboutyourself
+- utter_greet
+- utter_goodbye
+- utter_default
+- utter_ask_howcanhelp
+- utter_ask_location
+- utter_ask_cuisine
+- utter_nontier
+- utter_noresults
+- utter_ask_price
+- utter_thanks
+- utter_ask_ifmail
+- utter_ask_mail
+- utter_email_Sent
+- utter_email_error
+- action_city
+- action_restaurant
+- action_send_mail
+- action_get_cuisine
+- action_get_price
+- action_reset
+- action_restarted
+actions:
+- utter_userask
+- utter_aboutyourself
+- utter_greet
+- utter_goodbye
+- utter_default
+- utter_ask_howcanhelp
+- utter_ask_location
+- utter_ask_cuisine
+- utter_nontier
+- utter_noresults
+- utter_ask_price
+- utter_thanks
+- utter_ask_ifmail
+- utter_ask_mail
+- utter_email_Sent
+- utter_email_error
+- actions.ActionSearchCity
+- actions.ActionSearchRestaurants
+- actions.ActionSendMail
+- actions.ActionGetCuisineSlection
+- actions.ActionGetPriceSelection
+- actions.ActionResetSlots
+- actions.ActionRestarted
+config:
+  store_entities_as_slots: true
+entities:
+- location
+- cuisine
+- num
+- email
+- person
+intents:
+- greet:
+    use_entities: true
+- affirm:
+    use_entities: true
+- deny:
+    use_entities: true
+- goodbye:
+    use_entities: true
+- thankyou:
+    use_entities: true
+- getnum:
+    use_entities: true
+- restaurant_search:
+    use_entities: true
+- send_mail:
+    use_entities: true
+- ask_email:
+    use_entities: true
+- user_ask:
+    use_entities: true
+- about_yourself:
+    use_entities: true
+slots:
+  cuisine:
+    initial_value: unknown
+    type: rasa_core.slots.TextSlot
+  email:
+    initial_value: unknown
+    type: rasa_core.slots.TextSlot
+  location:
+    initial_value: unknown
+    type: rasa_core.slots.TextSlot
+  location_type:
+    initial_value: false
+    type: rasa_core.slots.BooleanSlot
+  noresults:
+    initial_value: true
+    type: rasa_core.slots.BooleanSlot
+  num:
+    initial_value: 0
+    max_value: 1.0
+    min_value: 0.0
+    type: rasa_core.slots.FloatSlot
+  price:
+    initial_value:
+    - 300
+    - 700
+    type: rasa_core.slots.ListSlot
+templates:
+  utter_aboutyourself:
+  - text: ' My name is Ramsi. I was created by Sanyog and Santhosh on 18th August
+      2018.'
+  - text: ' I am Ramsi. But you can call me Rams. I love to search restaurants for
+      my clients.'
+  - text: ' I am Ramsi. Being a bot can be lonely sometimes but I try to keep my spirits
+      high and work to help the clients.'
+  utter_ask_cuisine:
+  - buttons:
+    - payload: chinese
+      title: Chinese
+    - payload: mexican
+      title: Mexican
+    - payload: italian
+      title: Italian
+    - payload: american
+      title: American
+    - payload: south indian
+      title: South Indian
+    - payload: north indian
+      title: North Indian
+    text: What kind of cuisine would you like?
+  utter_ask_howcanhelp:
+  - text: how can I help you?
+  utter_ask_ifmail:
+  - text: Shall I send you the top 10 results via email?
+  - text: Would you like me to send the top 10 results via email?
+  - text: Would you like to have the top 10 results emailed to you?
+  - text: Would you be interested in having top 10 results emailed to you?
+  utter_ask_location:
+  - text: In what location?
+  - text: Please provide the location
+  - text: where are you based out of?
+  utter_ask_mail:
+  - text: Could you please share your email address then?
+  - text: What is your email address?
+  - text: Please provide your email address
+  - text: Provide your email address please
+  - text: Please enter your email address
+  utter_ask_price:
+  - buttons:
+    - payload: Lesser than Rs. 300
+      title: Lesser than Rs. 300
+    - payload: Rs. 300 to 700
+      title: Rs. 300 to 700
+    - payload: More than Rs. 700
+      title: More than Rs. 700
+    text: What price range are you looking at?
+  utter_default:
+  - text: I did not understand that. Could you please repeat again?
+  utter_email_Sent:
+  - text: The details have been emailed to you
+  - text: Email has been sent to the address provided by you
+  utter_email_error:
+  - text: Sorry, something went wrong, could not send the email.
+  - text: Email could not be sent, apologise for the inconvience.
+  utter_goodbye:
+  - text: goodbye :(
+  - text: Bye-bye
+  - text: Good bye. Have a nice day!
+  - text: It was great helping you out. Have a great day!
+  utter_greet:
+  - text: Hi, How may i help you?
+  - text: Hello, how can I help you!
+  - text: Hey, how is it going? How may I help you today?
+  utter_nontier:
+  - text: Sorry, We do not operate in this area yet.
+  - text: Unfortunately, we do not operate in this area yet.
+  utter_noresults:
+  - text: " That's unfortunate. May I help you with any other search?"
+  - text: ' Sorry for that. Can I help you with something else?'
+  utter_thanks:
+  - text: Mention not. Is there anything else I can help you with?
+  - text: My pleasure. What else can I do for you?
+  utter_userask:
+  - text: ' My name is Ramsi. I can help you search for restaurants in tier 1 and
+      2 cities in India.'
+  - text: ' I am Ramsi. I am here to help you find out restaurants in tier 1 and 2
+      indian cities.'

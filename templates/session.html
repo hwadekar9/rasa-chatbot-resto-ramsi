@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Rasa Resto</title>
+
+	<!-- for mobile screens -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.min.css'>
+  <link rel="stylesheet" href="static/css/style.css"> 
+  <style>
+
+    .messages .bubble-button.new {
+      -webkit-transform: scale(0);
+              transform: scale(0);
+      -webkit-transform-origin: 0 0;
+              transform-origin: 0 0;
+      -webkit-animation: bounce 500ms linear both;
+              animation: bounce 500ms linear both;
+    }
+    
+    .bubble-button {
+      border: 1px solid #ccc;
+      background: rgba(44, 44, 44, 0.67);
+      color: #fff;
+      padding: 6px 10px 7px;
+      border-radius: 20px 20px 20px 20px;
+      font-size: 14px;
+      line-height: 1.4;
+      text-align: center;
+      display: inline-block;
+      float: right;
+      cursor: pointer;
+      transition: all 200ms;
+      text-decoration: none;
+      word-break: normal;
+      box-sizing: content-box;
+    }
+    
+    .messages .multi-message.new {
+      -webkit-transform: scale(0);
+              transform: scale(0);
+      -webkit-transform-origin: 0 0;
+              transform-origin: 0 0;
+      -webkit-animation: bounce 500ms linear both;
+              animation: bounce 500ms linear both;
+    }
+    
+    .multi-message {
+      clear: both;
+      float: left;
+      padding: 6px 10px 7px;
+      border-radius: 20px;
+      background: #eee;
+      /*rgba(0, 0, 0, 0.1);*/
+      margin: 8px 0;
+      font-size: 14px;
+      line-height: 1.4;
+      margin-left: 35px;
+      position: relative;
+      border: 1px solid #ccc;
+    }
+  </style>
+  
+</head>
+
+<body>
+
+    <h2 style='color: #A52A2A;font-size: 30px;'>Rasa Resto</h3>
+    <h2 style='color: #8B008B;font-size: 10px;'> - Developed by Sanyog, Santhosh</h3>
+    
+    <!--
+  Chat UI
+  -->
+    <section class="avenue-messenger">
+    <div class="menu">
+     <div class="items"><span>
+       <a href="#" title="Minimize">&mdash;</a><br>
+       <a href="#" title="End Chat">&#10005;</a>
+
+       </span></div>
+      <div class="button">...</div>
+    </div>
+    <div class="agent-face">
+      <div class="half">
+       <img class="agent circle" src="https://preview.ibb.co/mWOctK/robot_customer_service.png" alt="Ramsi"></div>
+    </div>
+    <div class="chat">
+      <div class="chat-title">
+        <h1>Ramsi</h1>
+      </div>
+      <div class="messages">
+        <div class="messages-content"></div>
+      </div>
+      <div class="message-box">
+        <textarea type="text" class="message-input" placeholder="Type message..."></textarea>
+        <button type="submit" class="message-submit">Send</button>
+      </div>
+    </div>
+    </section>
+   
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script type="text/javascript">
+      
+      var socket = io.connect('http://127.0.0.1:5500/');
+      var $messages = $('.messages-content'),
+          d, h, m;
+      var prevMsg = ''
+
+      socket.on( 'connect', function() {
+        socket.emit( 'user_connect', {
+          data: 'User Connected'
+        } )
+      } )
+      
+      socket.on( 'bot_uttered', function( msg ) {
+        console.log( msg )
+        {
+          if (msg.text != prevMsg){
+            prevMsg = msg.text
+            $('.message.loading').remove();
+            if (msg.text.length > 200){
+                var lines = msg.text.split('\n');
+                console.log(lines) 
+                for (var i = 0; i < lines.length; i++) {
+                  if(lines[i].length > 0){
+                    $('<div class="multi-message new">' + lines[i] + '</div>').appendTo($('.mCSB_container')).addClass('new');                                           
+                  }
+                }
+            }else{
+                  $('<div class="message new"><figure class="avatar"><img src="https://preview.ibb.co/mWOctK/robot_customer_service.png" /></figure>' + msg.text+ '</div>').appendTo($('.mCSB_container')).addClass('new');
+            }
+            if (msg.quick_replies){
+              var option = ''
+              for (var i = 0; i < msg.quick_replies.length; i++) {
+                option = '<span class="bubble-button" ' +
+                          ' onClick="clickHandler(' +
+                          "'"+ msg.quick_replies[i]['title'] + "'" +
+                          ')" >'+
+                          msg.quick_replies[i]['title'] +
+                          '</span>';                                                           
+                                                           
+                $(option).appendTo($('.mCSB_container')).addClass('new');
+              }
+            }
+            setDate();
+            updateScrollbar();
+          }
+        }
+      })
+      
+      $(window).load(function() {
+        $messages.mCustomScrollbar();
+        setTimeout(function() {
+          fakeMessage();
+        }, 100);
+      });
+
+      function clickHandler(value) {
+          console.log(value)   
+          $('.bubble-button').remove();
+          $('<div class="message message-personal">' + value + '</div>').appendTo($('.mCSB_container')).addClass('new');
+          setDate();
+          socket.emit( 'user_uttered', {
+              customData: {"userId": "123"},
+              message : value
+            } )
+          $('<div class="message loading new"><figure class="avatar"><img src="https://preview.ibb.co/mWOctK/robot_customer_service.png" /></figure><span></span></div>').appendTo($('.mCSB_container'));
+          updateScrollbar();
+      }
+
+      function updateScrollbar() {
+        $messages.mCustomScrollbar("update").mCustomScrollbar('scrollTo', 'bottom', {
+          scrollInertia: 10,
+          timeout: 0
+        });
+      }
+
+      function setDate(){
+        d = new Date()
+        if (m != d.getMinutes()) {
+          m = d.getMinutes();
+          $('<div class="timestamp">' + d.getHours() + ':' + m + '</div>').appendTo($('.message:last'));
+          $('<div class="checkmark-sent-delivered">&check;</div>').appendTo($('.message:last'));
+          $('<div class="checkmark-read">&check;</div>').appendTo($('.message:last'));
+        }
+      }
+
+      function insertMessage() {
+        $('.bubble-button').remove();
+        msg = $('.message-input').val();
+        if ($.trim(msg) == '') {
+          return false;
+        }
+        $('<div class="message message-personal">' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
+        setDate();
+        $('.message-input').val(null);
+        socket.emit( 'user_uttered', {
+			      customData: {"userId": "123"},
+            message : msg
+          } )
+        $('<div class="message loading new"><figure class="avatar"><img src="https://preview.ibb.co/mWOctK/robot_customer_service.png" /></figure><span></span></div>').appendTo($('.mCSB_container'));
+        updateScrollbar();
+      }
+
+      $('.message-submit').click(function() {
+        insertMessage();
+      });
+
+      $(window).on('keydown', function(e) {
+        if (e.which == 13) {
+          insertMessage();
+          return false;
+        }
+      })
+
+
+      function fakeMessage() {
+        if ($('.message-input').val() != '') {
+          return false;
+        }
+        $('<div class="message loading new"><figure class="avatar"><img src="https://preview.ibb.co/mWOctK/robot_customer_service.png" /></figure><span></span></div>').appendTo($('.mCSB_container'));
+        updateScrollbar();
+
+        setTimeout(function() {
+          $('.message.loading').remove();
+          $('<div class="message new"><figure class="avatar"><img src="https://preview.ibb.co/mWOctK/robot_customer_service.png" /></figure>' + 'Hi' + '</div>').appendTo($('.mCSB_container')).addClass('new');
+          setDate();
+          updateScrollbar();
+        }, 1000 );
+      }
+
+      $('.button').click(function(){
+        $('.menu .items span').toggleClass('active');
+         $('.menu .button').toggleClass('active');
+      });
+    </script>
+
+    
+</body>
+</html>
